@@ -11,17 +11,8 @@ function configureGrunt(grunt) {
   var configuration = {};
   _.merge(configuration, requireComponent("install")(grunt));
   _.merge(configuration, require("quick-grunt-config-coding-conventions")(grunt, ["build_components"]));
-
-  var mochaSauceSettings = {
-    integrationTargets: ["server", "middleware"],
-    integrationEnvironments: {
-      server:     { INTEGRATION_ROOT: "/" },
-      middleware: { INTEGRATION_ROOT: "/subsite/" }
-    }
-  };
-  _.merge(configuration, require("quick-grunt-config-mocha-sauce")(grunt, mochaSauceSettings));
+  _.merge(configuration, require("quick-grunt-config-mocha-sauce")(grunt));
   _.merge(configuration, requireComponent("tests")(grunt));   // extra config/tasks to go with ...-mocha-sauce
-
 
   grunt.registerTask("validate", "run all the checks and tests",
       [
@@ -33,12 +24,6 @@ function configureGrunt(grunt) {
       [
         "install",                         // from install
         "validate"
-      ]);
-  grunt.registerTask("full-test",
-      "run 'test' plus integration tests on all configured clients on Sauce Labs",
-      [
-        "test",
-        "integrate-sauce"                  // from quick-grunt-config-mocha-sauce
       ]);
   grunt.registerTask("default", "run 'test' task by default", ["test"]);
 

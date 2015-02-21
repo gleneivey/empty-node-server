@@ -1,9 +1,15 @@
-var http = require('http');
+var http = require("http"),
+    config = require("environmental").config();
 
-var server = http.createServer(function (request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.end("Hello World\n");
-});
+function launch() {
+  var port = parseInt(config.server.port) || 8001,
+      server = http.createServer(function (request, response) {
+    response.writeHead(200, { "Content-Type": "text/plain" });
+    response.end("Hello World\n");
+  });
 
-server.listen(8000);
-console.log("Server running at http://127.0.0.1:8000/");
+  server.listen(port);
+  console.log("Server running at http://127.0.0.1:" + port + "/  (" + process.env.NODE_ENV + " mode)");
+}
+
+module.exports = { launch: launch };
